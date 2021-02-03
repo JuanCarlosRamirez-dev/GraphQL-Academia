@@ -1,3 +1,4 @@
+"Consultas de la información de los estudiantes y cursos. Solo lectura"
 type Query {
   "Lista de los estudiantes"
   estudiantes: [Estudiante!]!
@@ -9,12 +10,20 @@ type Query {
   curso(curso: ID!): Curso!
 }
 
+"Operaciones para añadir, editar o eliminar información"
 type Mutation {
+  "Opción para añadir la información de un nuevo curso"
   cursoNuevo(curso: CursoInput!): Curso!
+  "Opción para modificar / actualizar la información de un curso seleccionado"
   modificarCurso(curso: CursoInput!): Curso!
+  "Opción para eliminar / borrar la información de un curso seleccionado mediante el ID"
   eliminarCurso(id: ID!): Curso!
 }
 
+"""
+Información de entrada para gestionar los datos de un curso, como puede ser añadir
+y/o modificar los datos de un curso
+"""
 input CursoInput {
   id: ID
   title: String!
@@ -36,7 +45,7 @@ type Estudiante {
   courses: [Curso!]!
 }
 
-"Informacion de los cursos"
+"Informacion de un curso"
 type Curso {
   id: ID!
   title: String!
@@ -51,6 +60,7 @@ type Curso {
   reviews: [Valoracion!]!
 }
 
+"Nivel de los cursos"
 enum Nivel {
   TODOS
   NOVATOS
@@ -58,6 +68,7 @@ enum Nivel {
   EXPERTO
 }
 
+"Valoraciones de los cursos"
 type Valoracion {
   id: ID!
   name: String!
