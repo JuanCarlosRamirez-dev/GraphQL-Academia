@@ -1,7 +1,6 @@
 import { database } from "./../data/data.store";
 import { IResolvers } from "graphql-tools";
 import _ from "lodash";
-import { cursorTo } from "readline";
 
 const mutation: IResolvers = {
   Mutation: {
@@ -25,18 +24,7 @@ const mutation: IResolvers = {
         database.cursos.push(ItemCurso);
         return ItemCurso;
       }
-      return {
-        id: -1,
-        title: `El curso ya existe`,
-        description: "",
-        clases: -1,
-        time: 0.0,
-        level: "TODOS",
-        logo: "",
-        path: "",
-        teacher: "",
-        reviews: [],
-      };
+      return noCompletado(1);
     },
     modificarCurso(__: void, { curso }): any {
       const existeElemento = _.findIndex(database.cursos, function (o) {
@@ -48,36 +36,14 @@ const mutation: IResolvers = {
         database.cursos[existeElemento] = curso;
         return curso;
       }
-      return {
-        id: -1,
-        title: `El curso no existe`,
-        description: "",
-        clases: -1,
-        time: 0.0,
-        level: "TODOS",
-        logo: "",
-        path: "",
-        teacher: "",
-        reviews: [],
-      };
+      return noCompletado(2);
     },
     eliminarCurso(__: void, { id }): any {
       const borrarCurso = _.remove(database.cursos, function (curso) {
         return curso.id === id;
       });
       if (borrarCurso[0] === undefined) {
-        return {
-          id: -1,
-          title: `El curso no se puede borrar porque no se encuentra`,
-          description: "",
-          clases: -1,
-          time: 0.0,
-          level: "TODOS",
-          logo: "",
-          path: "",
-          teacher: "",
-          reviews: [],
-        };
+        return noCompletado(3);
       }
       return borrarCurso[0];
     },
@@ -85,3 +51,36 @@ const mutation: IResolvers = {
 };
 
 export default mutation;
+
+function noCompletado(operacion: number) {
+  let title = "";
+  switch (operacion) {
+    case 1: {
+      title = "El curso ya existe con ese titulo";
+      break;
+    }
+    case 2: {
+      title = "El curso no existe en la base de datos";
+      break;
+    }
+    case 3: {
+      title = "El curso no se puede borrar porque no se encuentra con ese ID";
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+  return {
+    id: -1,
+    title: title,
+    description: "",
+    clases: -1,
+    time: 0.0,
+    level: "TODOS",
+    logo: "",
+    path: "",
+    teacher: "",
+    reviews: [],
+  };
+}
