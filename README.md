@@ -1,3 +1,3 @@
 # GraphQL-Academia
 
-API creada con NodeJS y GraphQL de una academia online, haciendo uso de apollo-server-express.
+Primeros pasos con GraphQL: Lenguaje de manipulación y consulta de datos de una academia online Open Source para API con uso de Apollo Server
